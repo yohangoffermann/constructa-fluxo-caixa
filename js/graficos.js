@@ -3,10 +3,10 @@ export function mostrarGraficos(fluxoCaixa) {
     
     // Definir cores personalizadas
     const cores = {
-        receitas: 'rgba(75, 192, 192, 0.7)',
-        custos: 'rgba(255, 99, 132, 0.7)',
-        saldoMensal: 'rgba(54, 162, 235, 0.7)',
-        saldoAcumulado: 'rgba(255, 206, 86, 0.7)'
+        receitas: 'rgba(0, 104, 201, 0.7)',
+        custos: 'rgba(255, 43, 43, 0.7)',
+        saldoMensal: 'rgba(41, 176, 157, 0.7)',
+        saldoAcumulado: 'rgba(255, 171, 171, 0.7)'
     };
 
     new Chart(ctx, {
@@ -34,7 +34,6 @@ export function mostrarGraficos(fluxoCaixa) {
                     label: 'Saldo Mensal',
                     data: fluxoCaixa.map(item => item.saldoMensal),
                     borderColor: cores.saldoMensal,
-                    borderDash: [5, 5],
                     fill: false,
                     tension: 0.4
                 },
@@ -42,7 +41,6 @@ export function mostrarGraficos(fluxoCaixa) {
                     label: 'Saldo Acumulado',
                     data: fluxoCaixa.map(item => item.saldoAcumulado),
                     borderColor: cores.saldoAcumulado,
-                    borderWidth: 3,
                     fill: false,
                     tension: 0.4
                 }
@@ -77,7 +75,7 @@ export function mostrarGraficos(fluxoCaixa) {
                                 label += ': ';
                             }
                             if (context.parsed.y !== null) {
-                                label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
+                                label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(context.parsed.y);
                             }
                             return label;
                         }
@@ -107,10 +105,14 @@ export function mostrarGraficos(fluxoCaixa) {
                     },
                     ticks: {
                         callback: function(value, index, values) {
-                            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+                            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
                         }
                     }
                 }
+            },
+            animation: {
+                duration: 2000,
+                easing: 'easeOutQuart'
             }
         }
     });
