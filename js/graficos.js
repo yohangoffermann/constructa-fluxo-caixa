@@ -1,10 +1,10 @@
+// graficos.js
+
 export function mostrarGraficos(fluxo) {
     console.log("mostrarGraficos chamado com:", fluxo);
-    // ... resto do código
-}
-export function mostrarGraficos(fluxo) {
     const ctx = document.getElementById('fluxoCaixaChart').getContext('2d');
     
+    // Destruir o gráfico existente se houver
     if (window.myChart instanceof Chart) {
         window.myChart.destroy();
     }
