@@ -47,92 +47,113 @@ function calcularFluxoAutoFinanciado(vgv, custoConstrucaoPercentual, prazoMeses,
     return fluxo;
 }
 
-// Parâmetros do projeto
-const params = {
-    vgv: 35.0,
-    custoConstrucaoPercentual: 70,
-    prazoMeses: 48,
-    percentualInicio: 30,
-    percentualMeio: 40,
-    percentualFim: 30,
-    percentualLancamento: 20,
-    percentualBaloes: 30,
-    percentualParcelas: 50,
-    prazoParcelas: 48
-};
+// Função para atualizar o fluxo de caixa
+function atualizarFluxoCaixa() {
+    const params = {
+        vgv: parseFloat(document.getElementById('vgv').value),
+        custoConstrucaoPercentual: parseInt(document.getElementById('custoConstrucaoPercentual').value),
+        prazoMeses: parseInt(document.getElementById('prazoMeses').value),
+        percentualInicio: parseInt(document.getElementById('percentualInicio').value),
+        percentualMeio: parseInt(document.getElementById('percentualMeio').value),
+        percentualFim: parseInt(document.getElementById('percentualFim').value),
+        percentualLancamento: parseInt(document.getElementById('percentualLancamento').value),
+        percentualBaloes: parseInt(document.getElementById('percentualBaloes').value),
+        percentualParcelas: parseInt(document.getElementById('percentualParcelas').value),
+        prazoParcelas: parseInt(document.getElementById('prazoParcelas').value)
+    };
 
-// Calcular o fluxo de caixa
-const fluxo = calcularFluxoAutoFinanciado(
-    params.vgv, params.custoConstrucaoPercentual, params.prazoMeses,
-    params.percentualInicio, params.percentualMeio, params.percentualFim,
-    params.percentualLancamento, params.percentualBaloes, params.percentualParcelas,
-    params.prazoParcelas
-);
+    const fluxo = calcularFluxoAutoFinanciado(
+        params.vgv, params.custoConstrucaoPercentual, params.prazoMeses,
+        params.percentualInicio, params.percentualMeio, params.percentualFim,
+        params.percentualLancamento, params.percentualBaloes, params.percentualParcelas,
+        params.prazoParcelas
+    );
 
-// Especificação do gráfico Vega-Lite
-const spec = {
-    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "description": "Fluxo de Caixa do Empreendimento",
-    "width": "container",
-    "height": 400,
-    "data": { "values": fluxo },
-    "layer": [
-        {
-            "mark": {"type": "area", "opacity": 0.7, "color": "#0068C9"},
-            "encoding": {
-                "x": {"field": "mes", "type": "quantitative", "title": "Mês"},
-                "y": {"field": "receitas", "type": "quantitative", "title": "Valor (R$)"}
+    const spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "description": "Fluxo de Caixa do Empreendimento",
+        "width": "container",
+        "height": 400,
+        "data": { "values": fluxo },
+        "layer": [
+            {
+                "mark": {"type": "area", "opacity": 0.7, "color": "#0068C9"},
+                "encoding": {
+                    "x": {"field": "mes", "type": "quantitative", "title": "Mês"},
+                    "y": {"field": "receitas", "type": "quantitative", "title": "Valor (R$)"}
+                }
+            },
+            {
+                "mark": {"type": "area", "opacity": 0.7, "color": "#FF8700"},
+                "encoding": {
+                    "x": {"field": "mes", "type": "quantitative"},
+                    "y": {"field": "custos", "type": "quantitative"}
+                }
+            },
+            {
+                "mark": {"type": "line", "color": "#29B09D"},
+                "encoding": {
+                    "x": {"field": "mes", "type": "quantitative"},
+                    "y": {"field": "saldoAcumulado", "type": "quantitative"}
+                }
             }
-        },
-        {
-            "mark": {"type": "area", "opacity": 0.7, "color": "#FF8700"},
-            "encoding": {
-                "x": {"field": "mes", "type": "quantitative"},
-                "y": {"field": "custos", "type": "quantitative"}
-            }
-        },
-        {
-            "mark": {"type": "line", "color": "#29B09D"},
-            "encoding": {
-                "x": {"field": "mes", "type": "quantitative"},
-                "y": {"field": "saldoAcumulado", "type": "quantitative"}
-            }
-        }
-    ]
-};
+        ]
+    };
 
-// Renderizar o gráfico
-vegaEmbed('#vis', spec);
+    vegaEmbed('#vis', spec);
 
-// Calcular e exibir métricas
-const lucroTotal = fluxo[fluxo.length - 1].saldoAcumulado;
-const margem = (lucroTotal / params.vgv) * 100;
-const exposicaoMaxima = -Math.min(...fluxo.map(f => f.saldoAcumulado));
-const mesPayback = fluxo.findIndex(f => f.saldoAcumulado > 0) + 1;
+    const lucroTotal = fluxo[fluxo.length - 1].saldoAcumulado;
+    const margem = (lucroTotal / params.vgv) * 100;
+    const exposicaoMaxima = -Math.min(...fluxo.map(f => f.saldoAcumulado));
+    const mesPayback = fluxo.findIndex(f => f.saldoAcumulado > 0) + 1;
 
-document.getElementById('metricas').innerHTML = `
-    <div class="metrica">
-        <h3>VGV</h3>
-        <p>R$ ${params.vgv.toFixed(2)} milhões</p>
-    </div>
-    <div class="metrica">
-        <h3>Custo de Construção</h3>
-        <p>R$ ${(params.vgv * params.custoConstrucaoPercentual / 100).toFixed(2)} milhões</p>
-    </div>
-    <div class="metrica">
-        <h3>Lucro Total</h3>
-        <p>R$ ${lucroTotal.toFixed(2)} milhões</p>
-    </div>
-    <div class="metrica">
-        <h3>Margem</h3>
-        <p>${margem.toFixed(2)}%</p>
-    </div>
-    <div class="metrica">
-        <h3>Exposição Máxima de Caixa</h3>
-        <p>R$ ${exposicaoMaxima.toFixed(2)} milhões</p>
-    </div>
-    <div class="metrica">
-        <h3>Mês de Payback</h3>
-        <p>${mesPayback}</p>
-    </div>
-`;
+    document.getElementById('metricas').innerHTML = `
+        <div class="metrica">
+            <h3>VGV</h3>
+            <p>R$ ${params.vgv.toFixed(2)} milhões</p>
+        </div>
+        <div class="metrica">
+            <h3>Custo de Construção</h3>
+            <p>R$ ${(params.vgv * params.custoConstrucaoPercentual / 100).toFixed(2)} milhões</p>
+        </div>
+        <div class="metrica">
+            <h3>Lucro Total</h3>
+            <p>R$ ${lucroTotal.toFixed(2)} milhões</p>
+        </div>
+        <div class="metrica">
+            <h3>Margem</h3>
+            <p>${margem.toFixed(2)}%</p>
+        </div>
+        <div class="metrica">
+            <h3>Exposição Máxima de Caixa</h3>
+            <p>R$ ${exposicaoMaxima.toFixed(2)} milhões</p>
+        </div>
+        <div class="metrica">
+            <h3>Mês de Payback</h3>
+            <p>${mesPayback}</p>
+        </div>
+    `;
+}
+
+// Função para atualizar os valores exibidos dos sliders
+function atualizarValoresSliders() {
+    document.getElementById('custoConstrucaoPercentualValue').textContent = document.getElementById('custoConstrucaoPercentual').value + '%';
+    document.getElementById('percentualInicioValue').textContent = document.getElementById('percentualInicio').value + '%';
+    document.getElementById('percentualMeioValue').textContent = document.getElementById('percentualMeio').value + '%';
+    document.getElementById('percentualFimValue').textContent = document.getElementById('percentualFim').value + '%';
+    document.getElementById('percentualLancamentoValue').textContent = document.getElementById('percentualLancamento').value + '%';
+    document.getElementById('percentualBaloesValue').textContent = document.getElementById('percentualBaloes').value + '%';
+    document.getElementById('percentualParcelasValue').textContent = document.getElementById('percentualParcelas').value + '%';
+}
+
+// Adicionar event listeners para atualizar os valores dos sliders em tempo real
+document.getElementById('custoConstrucaoPercentual').addEventListener('input', atualizarValoresSliders);
+document.getElementById('percentualInicio').addEventListener('input', atualizarValoresSliders);
+document.getElementById('percentualMeio').addEventListener('input', atualizarValoresSliders);
+document.getElementById('percentualFim').addEventListener('input', atualizarValoresSliders);
+document.getElementById('percentualLancamento').addEventListener('input', atualizarValoresSliders);
+document.getElementById('percentualBaloes').addEventListener('input', atualizarValoresSliders);
+document.getElementById('percentualParcelas').addEventListener('input', atualizarValoresSliders);
+
+// Inicializar o fluxo de caixa
+atualizarFluxoCaixa();
