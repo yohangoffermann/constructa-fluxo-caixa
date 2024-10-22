@@ -1,5 +1,13 @@
 function mostrarGraficos(fluxo) {
     console.log("mostrarGraficos chamado com:", fluxo);
+    const canvas = document.getElementById('fluxoCaixaChart');
+    if (!canvas) {
+        console.error("Elemento canvas não encontrado");
+        return;
+    }
+    const ctx = canvas.getContext('2d');
+    // ... resto do código
+}
     const ctx = document.getElementById('fluxoCaixaChart').getContext('2d');
     
     if (window.myChart instanceof Chart) {
