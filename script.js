@@ -78,21 +78,21 @@ const spec = {
     "data": { "values": fluxo },
     "layer": [
         {
-            "mark": {"type": "area", "opacity": 0.7, "color": "#0068c9"},
+            "mark": {"type": "area", "opacity": 0.7, "color": "#0068C9"},
             "encoding": {
                 "x": {"field": "mes", "type": "quantitative", "title": "Mês"},
                 "y": {"field": "receitas", "type": "quantitative", "title": "Valor (R$)"}
             }
         },
         {
-            "mark": {"type": "area", "opacity": 0.7, "color": "#ff2b2b"},
+            "mark": {"type": "area", "opacity": 0.7, "color": "#FF8700"},
             "encoding": {
                 "x": {"field": "mes", "type": "quantitative"},
                 "y": {"field": "custos", "type": "quantitative"}
             }
         },
         {
-            "mark": {"type": "line", "color": "#29b09d"},
+            "mark": {"type": "line", "color": "#29B09D"},
             "encoding": {
                 "x": {"field": "mes", "type": "quantitative"},
                 "y": {"field": "saldoAcumulado", "type": "quantitative"}
@@ -111,10 +111,28 @@ const exposicaoMaxima = -Math.min(...fluxo.map(f => f.saldoAcumulado));
 const mesPayback = fluxo.findIndex(f => f.saldoAcumulado > 0) + 1;
 
 document.getElementById('metricas').innerHTML = `
-    <p>VGV: R$ ${params.vgv.toFixed(2)} milhões</p>
-    <p>Custo de Construção: R$ ${(params.vgv * params.custoConstrucaoPercentual / 100).toFixed(2)} milhões</p>
-    <p>Lucro Total: R$ ${lucroTotal.toFixed(2)} milhões</p>
-    <p>Margem: ${margem.toFixed(2)}%</p>
-    <p>Exposição Máxima de Caixa: R$ ${exposicaoMaxima.toFixed(2)} milhões</p>
-    <p>Mês de Payback: ${mesPayback}</p>
+    <div class="metrica">
+        <h3>VGV</h3>
+        <p>R$ ${params.vgv.toFixed(2)} milhões</p>
+    </div>
+    <div class="metrica">
+        <h3>Custo de Construção</h3>
+        <p>R$ ${(params.vgv * params.custoConstrucaoPercentual / 100).toFixed(2)} milhões</p>
+    </div>
+    <div class="metrica">
+        <h3>Lucro Total</h3>
+        <p>R$ ${lucroTotal.toFixed(2)} milhões</p>
+    </div>
+    <div class="metrica">
+        <h3>Margem</h3>
+        <p>${margem.toFixed(2)}%</p>
+    </div>
+    <div class="metrica">
+        <h3>Exposição Máxima de Caixa</h3>
+        <p>R$ ${exposicaoMaxima.toFixed(2)} milhões</p>
+    </div>
+    <div class="metrica">
+        <h3>Mês de Payback</h3>
+        <p>${mesPayback}</p>
+    </div>
 `;
