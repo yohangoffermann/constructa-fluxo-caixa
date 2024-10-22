@@ -1,7 +1,9 @@
 import { calcularFluxoAutoFinanciado } from './calculos.js';
 import { mostrarGraficos } from './graficos.js';
 import { atualizarAnalise } from './analise.js';
-
+function atualizarFluxoCaixa() {
+    console.log("atualizarFluxoCaixa chamado");
+    
 console.log("main.js carregado");
 
 document.addEventListener('DOMContentLoaded', () => {
