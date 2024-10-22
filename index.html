@@ -1,42 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise de Fluxo de Caixa - Modelo Auto Financiado</title>
+    <title>Constructa - Análise de Fluxo de Caixa</title>
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #0068C9;
+            --secondary-color: #29B09D;
+            --accent-color: #FF8700;
+            --background-color: #F0F2F6;
+            --text-color: #31333F;
+        }
         body {
-            font-family: 'Source Sans Pro', sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: #f0f2f6;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
         }
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background-color: #ffffff;
             padding: 20px;
-            border-radius: 10px;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         h1, h2 {
-            color: #31333F;
+            margin: 0;
+            font-weight: 700;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
         }
         #vis {
             width: 100%;
             height: 500px;
         }
+        .metricas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .metrica {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .metrica h3 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 400;
+        }
+        .metrica p {
+            margin: 10px 0 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Análise de Fluxo de Caixa - Modelo Auto Financiado</h1>
-        <div id="vis"></div>
-        <h2>Métricas do Projeto</h2>
-        <div id="metricas"></div>
-    </div>
+    <header>
+        <div class="container">
+            <h1>Constructa - Análise de Fluxo de Caixa</h1>
+        </div>
+    </header>
+    <main class="container">
+        <div class="card">
+            <h2>Fluxo de Caixa do Empreendimento</h2>
+            <div id="vis"></div>
+        </div>
+        <div class="card">
+            <h2>Métricas do Projeto</h2>
+            <div class="metricas-grid" id="metricas"></div>
+        </div>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>
