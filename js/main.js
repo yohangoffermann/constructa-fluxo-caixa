@@ -2,7 +2,11 @@ import { calcularFluxoAutoFinanciado } from './calculos.js';
 import { mostrarGraficos } from './graficos.js';
 import { atualizarAnalise } from './analise.js';
 
+console.log("main.js carregado");
+
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOMContentLoaded event fired");
+
     const parametros = {
         vgv: 35,
         custoConstrucaoPercentual: 70,
@@ -17,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function atualizarFluxoCaixa() {
+        console.log("atualizarFluxoCaixa chamado");
         const custoConstrucao = parametros.vgv * parametros.custoConstrucaoPercentual / 100;
         const fluxoCaixa = calcularFluxoAutoFinanciado(
             parametros.vgv,
@@ -31,6 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
             parametros.prazoParcelas
         );
 
+        console.log("Fluxo de caixa calculado:", fluxoCaixa);
+
+        console.log("Chamando mostrarGraficos");
         mostrarGraficos(fluxoCaixa);
         atualizarTabelaFluxoCaixa(fluxoCaixa);
         atualizarAnalise(fluxoCaixa, parametros);
@@ -73,8 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
         parametros.prazoMeses = parseInt(e.target.value);
         atualizarFluxoCaixa();
     });
-
-    // Adicione mais event listeners para outros inputs
 
     // Inicialização
     atualizarFluxoCaixa();
