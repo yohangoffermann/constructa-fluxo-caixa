@@ -77,30 +77,41 @@ function atualizarFluxoCaixa() {
         "data": { "values": fluxo },
         "layer": [
             {
-                "mark": {"type": "area", "opacity": 0.7, "color": "#0068C9"},
+                "mark": {"type": "area", "opacity": 0.7, "color": "#ff8700"},
                 "encoding": {
                     "x": {"field": "mes", "type": "quantitative", "title": "Mês"},
                     "y": {"field": "receitas", "type": "quantitative", "title": "Valor (R$)"}
                 }
             },
             {
-                "mark": {"type": "area", "opacity": 0.7, "color": "#FF8700"},
+                "mark": {"type": "area", "opacity": 0.7, "color": "#00ff00"},
                 "encoding": {
                     "x": {"field": "mes", "type": "quantitative"},
                     "y": {"field": "custos", "type": "quantitative"}
                 }
             },
             {
-                "mark": {"type": "line", "color": "#29B09D"},
+                "mark": {"type": "line", "color": "#ffffff"},
                 "encoding": {
                     "x": {"field": "mes", "type": "quantitative"},
                     "y": {"field": "saldoAcumulado", "type": "quantitative"}
                 }
             }
-        ]
+        ],
+        "config": {
+            "background": "#1e1e2f",
+            "axis": {
+                "labelColor": "#ffffff",
+                "titleColor": "#ffffff"
+            },
+            "legend": {
+                "labelColor": "#ffffff",
+                "titleColor": "#ffffff"
+            }
+        }
     };
 
-    vegaEmbed('#vis', spec);
+    vegaEmbed('#vis', spec, {theme: 'dark'});
 
     const lucroTotal = fluxo[fluxo.length - 1].saldoAcumulado;
     const margem = (lucroTotal / params.vgv) * 100;
