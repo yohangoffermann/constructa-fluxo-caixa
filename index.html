@@ -5,24 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Constructa - Análise de Fluxo de Caixa</title>
     <link rel="stylesheet" href="css/style.css">
-    <script src="lib/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Constructa - Análise de Fluxo de Caixa</h1>
-    </header>
-    <main>
-        <section id="parametros">
-            <!-- Inputs aqui -->
-        </section>
-        <section id="grafico">
-            <canvas id="fluxoCaixaChart"></canvas>
-        </section>
-        <section id="metricas">
-            <!-- Métricas aqui -->
-        </section>
-    </main>
-    <script src="js/fluxoCaixa.js"></script>
-    <script src="js/main.js"></script>
+    <div id="app">
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#parametros">Parâmetros</a></li>
+                <li><a href="#fluxo-caixa">Fluxo de Caixa</a></li>
+                <li><a href="#analise">Análise</a></li>
+            </ul>
+        </nav>
+        
+        <main>
+            <section id="home">
+                <h1>Análise de Fluxo de Caixa - Modelo Auto Financiado</h1>
+                <p>Bem-vindo à ferramenta de análise de fluxo de caixa para projetos imobiliários.</p>
+            </section>
+
+            <section id="parametros">
+                <h2>Parâmetros do Projeto</h2>
+                <div class="input-group">
+                    <label for="vgv">VGV (Valor Geral de Vendas) em milhões R$:</label>
+                    <input type="number" id="vgv" value="35" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="custoConstrucaoPercentual">Custo de Construção (% do VGV):</label>
+                    <input type="number" id="custoConstrucaoPercentual" value="70" min="50" max="90">
+                </div>
+                <div class="input-group">
+                    <label for="prazoMeses">Prazo de Construção (meses):</label>
+                    <input type="number" id="prazoMeses" value="48" min="1">
+                </div>
+                <!-- Adicione mais inputs para outros parâmetros aqui -->
+            </section>
+
+            <section id="fluxo-caixa">
+                <h2>Fluxo de Caixa</h2>
+                <canvas id="fluxoCaixaChart"></canvas>
+                <table id="fluxoCaixaTable"></table>
+            </section>
+
+            <section id="analise">
+                <h2>Análise do Projeto</h2>
+                <div id="metricas"></div>
+                <div id="analiseDetalhada"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/main.js" type="module"></script>
 </body>
 </html>
