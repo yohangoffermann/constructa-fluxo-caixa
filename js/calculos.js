@@ -1,51 +1,49 @@
-export function calcularFluxoAutoFinanciado(vgv, custoConstrucao, prazoMeses, 
-                                            percentualInicio, percentualMeio, percentualFim,
-                                            percentualLancamento, percentualBaloes, percentualParcelas,
-                                            prazoParcelas) {
-    console.log("calcularFluxoAutoFinanciado chamado com:", arguments);
+export function calcularFluxoAutoFinanciado(vgv, custo_construcao, prazo_meses, 
+                                            percentual_inicio, percentual_meio, percentual_fim,
+                                            percentual_lancamento, percentual_baloes, percentual_parcelas,
+                                            prazo_parcelas) {
     const fluxo = [];
     
-    const custos = new Array(prazoMeses).fill(0);
-    const tercioObra = Math.floor(prazoMeses / 3);
-    for (let i = 0; i < tercioObra; i++) {
-        custos[i] = custoConstrucao * percentualInicio / 100 / tercioObra;
+    const custos = new Array(prazo_meses).fill(0);
+    const tercio_obra = Math.floor(prazo_meses / 3);
+    for (let i = 0; i < tercio_obra; i++) {
+        custos[i] = custo_construcao * percentual_inicio / 100 / tercio_obra;
     }
-    for (let i = tercioObra; i < 2 * tercioObra; i++) {
-        custos[i] = custoConstrucao * percentualMeio / 100 / tercioObra;
+    for (let i = tercio_obra; i < 2 * tercio_obra; i++) {
+        custos[i] = custo_construcao * percentual_meio / 100 / tercio_obra;
     }
-    for (let i = 2 * tercioObra; i < prazoMeses; i++) {
-        custos[i] = custoConstrucao * percentualFim / 100 / (prazoMeses - 2 * tercioObra);
-    }
-    
-    const receitas = new Array(prazoMeses).fill(0);
-    receitas[0] += vgv * percentualLancamento / 100;
-    
-    const valorBaloes = vgv * percentualBaloes / 100;
-    const numBaloes = 3;
-    for (let i = 1; i <= numBaloes; i++) {
-        const mesBalao = Math.floor(i * prazoMeses / (numBaloes + 1));
-        receitas[mesBalao] += valorBaloes / numBaloes;
+    for (let i = 2 * tercio_obra; i < prazo_meses; i++) {
+        custos[i] = custo_construcao * percentual_fim / 100 / (prazo_meses - 2 * tercio_obra);
     }
     
-    const valorParcelas = vgv * percentualParcelas / 100;
-    const parcelaMensal = valorParcelas / Math.min(prazoParcelas, prazoMeses);
-    for (let i = 0; i < Math.min(prazoParcelas, prazoMeses); i++) {
-        receitas[i] += parcelaMensal;
+    const receitas = new Array(prazo_meses).fill(0);
+    receitas[0] += vgv * percentual_lancamento / 100;
+    
+    const valor_baloes = vgv * percentual_baloes / 100;
+    const num_baloes = 3;
+    for (let i = 1; i <= num_baloes; i++) {
+        const mes_balao = Math.floor(i * prazo_meses / (num_baloes + 1));
+        receitas[mes_balao] += valor_baloes / num_baloes;
     }
     
-    let saldoAcumulado = 0;
-    for (let mes = 0; mes < prazoMeses; mes++) {
-        const saldoMensal = receitas[mes] - custos[mes];
-        saldoAcumulado += saldoMensal;
+    const valor_parcelas = vgv * percentual_parcelas / 100;
+    const parcela_mensal = valor_parcelas / Math.min(prazo_parcelas, prazo_meses);
+    for (let i = 0; i < Math.min(prazo_parcelas, prazo_meses); i++) {
+        receitas[i] += parcela_mensal;
+    }
+    
+    let saldo_acumulado = 0;
+    for (let mes = 0; mes < prazo_meses; mes++) {
+        const saldo_mensal = receitas[mes] - custos[mes];
+        saldo_acumulado += saldo_mensal;
         fluxo.push({
-            mes: mes + 1,
-            receitas: receitas[mes],
-            custos: custos[mes],
-            saldoMensal: saldoMensal,
-            saldoAcumulado: saldoAcumulado
+            'Mês': mes + 1,
+            'Receitas': receitas[mes],
+            'Custos': custos[mes],
+            'Saldo Mensal': saldo_mensal,
+            'Saldo Acumulado': saldo_acumulado
         });
     }
     
-    console.log("Fluxo calculado:", fluxo);
     return fluxo;
 }
