@@ -1,53 +1,82 @@
-console.log("graficos.js carregado");
-
-export function mostrarGraficos(fluxoCaixa) {
-    console.log("mostrarGraficos chamado com:", fluxoCaixa);
-    const canvas = document.getElementById('fluxoCaixaChart');
-    if (!canvas) {
-        console.error("Canvas element not found");
-        return;
-    }
-    const ctx = canvas.getContext('2d');
+export function mostrarGraficos(fluxo) {
+    const ctx = document.getElementById('fluxoCaixaChart').getContext('2d');
     
-    // Destruir o gráfico existente, se houver
+    // Destruir o gráfico existente se houver
     if (window.myChart instanceof Chart) {
         window.myChart.destroy();
     }
 
-    try {
-        window.myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: fluxoCaixa.map(item => `Mês ${item.mes}`),
-                datasets: [
-                    {
-                        label: 'Receitas',
-                        data: fluxoCaixa.map(item => item.receitas),
-                        borderColor: 'rgba(0, 104, 201, 0.7)',
-                        backgroundColor: 'rgba(0, 104, 201, 0.1)',
-                        fill: true
-                    },
-                    {
-                        label: 'Custos',
-                        data: fluxoCaixa.map(item => item.custos),
-                        borderColor: 'rgba(255, 43, 43, 0.7)',
-                        backgroundColor: 'rgba(255, 43, 43, 0.1)',
-                        fill: true
+    window.myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: fluxo.map(item => `Mês ${item['Mês']}`),
+            datasets: [
+                {
+                    label: 'Receitas',
+                    data: fluxo.map(item => item['Receitas']),
+                    borderColor: '#0068c9',
+                    backgroundColor: 'rgba(0, 104, 201, 0.1)',
+                    fill: true
+                },
+                {
+                    label: 'Custos',
+                    data: fluxo.map(item => item['Custos']),
+                    borderColor: '#ff2b2b',
+                    backgroundColor: 'rgba(255, 43, 43, 0.1)',
+                    fill: true
+                },
+                {
+                    label: 'Saldo Mensal',
+                    data: fluxo.map(item => item['Saldo Mensal']),
+                    borderColor: '#29b09d',
+                    fill: false
+                },
+                {
+                    label: 'Saldo Acumulado',
+                    data: fluxo.map(item => item['Saldo Acumulado']),
+                    borderColor: '#ffabab',
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Mês'
                     }
-                ]
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Valor (milhões R$)'
+                    },
+                    ticks: {
+                        callback: function(value, index, values) {
+                            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value / 1000000);
+                        }
+                    }
+                }
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(context.parsed.y / 1000000) + ' milhões';
+                            }
+                            return label;
+                        }
                     }
                 }
             }
-        });
-        console.log("Gráfico criado com sucesso");
-    } catch (error) {
-        console.error("Erro ao criar o gráfico:", error);
-    }
+        }
+    });
 }
