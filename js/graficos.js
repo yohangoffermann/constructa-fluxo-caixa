@@ -1,10 +1,7 @@
-// graficos.js
-
-export function mostrarGraficos(fluxo) {
+function mostrarGraficos(fluxo) {
     console.log("mostrarGraficos chamado com:", fluxo);
     const ctx = document.getElementById('fluxoCaixaChart').getContext('2d');
     
-    // Destruir o gráfico existente se houver
     if (window.myChart instanceof Chart) {
         window.myChart.destroy();
     }
@@ -39,6 +36,7 @@ export function mostrarGraficos(fluxo) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            aspectRatio: 2,
             scales: {
                 x: {
                     title: {
@@ -77,3 +75,5 @@ export function mostrarGraficos(fluxo) {
         }
     });
 }
+
+export default mostrarGraficos;
