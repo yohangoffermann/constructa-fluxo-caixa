@@ -1,7 +1,6 @@
 export function mostrarGraficos(fluxo) {
     const ctx = document.getElementById('fluxoCaixaChart').getContext('2d');
     
-    // Destruir o gráfico existente se houver
     if (window.myChart instanceof Chart) {
         window.myChart.destroy();
     }
@@ -26,15 +25,9 @@ export function mostrarGraficos(fluxo) {
                     fill: true
                 },
                 {
-                    label: 'Saldo Mensal',
-                    data: fluxo.map(item => item['Saldo Mensal']),
-                    borderColor: '#29b09d',
-                    fill: false
-                },
-                {
                     label: 'Saldo Acumulado',
                     data: fluxo.map(item => item['Saldo Acumulado']),
-                    borderColor: '#ffabab',
+                    borderColor: '#29b09d',
                     fill: false
                 }
             ]
@@ -52,11 +45,11 @@ export function mostrarGraficos(fluxo) {
                 y: {
                     title: {
                         display: true,
-                        text: 'Valor (milhões R$)'
+                        text: 'Valor (R$)'
                     },
                     ticks: {
-                        callback: function(value, index, values) {
-                            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value / 1000000);
+                        callback: function(value) {
+                            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
                         }
                     }
                 }
@@ -70,7 +63,7 @@ export function mostrarGraficos(fluxo) {
                                 label += ': ';
                             }
                             if (context.parsed.y !== null) {
-                                label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(context.parsed.y / 1000000) + ' milhões';
+                                label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
                             }
                             return label;
                         }
