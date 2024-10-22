@@ -1,16 +1,19 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
     line-height: 1.6;
-    color: #333;
+    color: #31333F;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    background-color: #ffffff;
 }
 
 nav ul {
     display: flex;
     list-style-type: none;
     padding: 0;
+    background-color: #f8f9fa;
+    border-radius: 4px;
 }
 
 nav ul li {
@@ -20,61 +23,67 @@ nav ul li {
 nav ul li a {
     text-decoration: none;
     color: #0068c9;
+    padding: 10px 15px;
+    display: block;
 }
 
-.input-group {
-    margin-bottom: 15px;
+nav ul li a:hover {
+    background-color: #e9ecef;
+}
+
+h1, h2 {
+    color: #0068c9;
+}
+
+form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
 }
 
 label {
     display: block;
     margin-bottom: 5px;
+    color: #808495;
 }
 
-input[type="number"] {
+input[type="number"], input[type="range"] {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ddd;
+    border: 1px solid #ced4da;
     border-radius: 4px;
 }
 
+button {
+    background-color: #0068c9;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
 #fluxoCaixaChart {
-    height: 400px;
     width: 100%;
+    height: 400px;
     margin-bottom: 20px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
 }
 
 th, td {
-    padding: 12px;
+    border: 1px solid #ced4da;
+    padding: 8px;
     text-align: left;
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: #e9ecef;
 }
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-#fluxoCaixaChart {
-    width: 100%;
-    height: 400px;
-    margin-bottom: 20px;
-}
-
-/* Adicione mais estilos conforme necessário */
