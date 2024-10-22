@@ -1,68 +1,81 @@
-let chart;
-
-function inicializarGrafico() {
-    const ctx = document.getElementById('fluxoCaixaChart').getContext('2d');
-    chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [
-                {
-                    label: 'Receitas',
-                    data: [],
-                    borderColor: 'green',
-                    fill: false
-                },
-                {
-                    label: 'Custos',
-                    data: [],
-                    borderColor: 'red',
-                    fill: false
-                },
-                {
-                    label: 'Saldo Acumulado',
-                    data: [],
-                    borderColor: 'blue',
-                    fill: false
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            title: {
-                display: true,
-                text: 'Fluxo de Caixa do Empreendimento'
-            }
-        }
-    });
-}
-
-function atualizarGrafico(dados) {
-    chart.data.labels = dados.meses;
-    chart.data.datasets[0].data = dados.receitas;
-    chart.data.datasets[1].data = dados.custos;
-    chart.data.datasets[2].data = dados.saldoAcumulado;
-    chart.update();
-}
-
-function atualizarFluxoCaixa() {
-    const params = {
-        // Obter valores dos inputs
-    };
-
-    const fluxoCaixa = new FluxoCaixa(params);
-    const dados = fluxoCaixa.calcular();
-
-    atualizarGrafico(dados);
-    atualizarMetricas(dados);
-}
-
-function atualizarMetricas(dados) {
-    // Atualizar as métricas na página
-}
+import { calcularFluxoAutoFinanciado } from './calculos.js';
+import { mostrarGraficos } from './graficos.js';
+import { atualizarAnalise } from './analise.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    inicializarGrafico();
-    // Adicionar event listeners aos inputs
-    document.getElementById('atualizarButton').addEventListener('click', atualizarFluxoCaixa);
+    const parametros = {
+        vgv: 35,
+        custoConstrucaoPercentual: 70,
+        prazoMeses: 48,
+        percentualInicio: 30,
+        percentualMeio: 40,
+        percentualFim: 30,
+        percentualLancamento: 20,
+        percentualBaloes: 30,
+        percentualParcelas: 50,
+        prazoParcelas: 48
+    };
+
+    function atualizarFluxoCaixa() {
+        const custoConstrucao = parametros.vgv * parametros.custoConstrucaoPercentual / 100;
+        const fluxoCaixa = calcularFluxoAutoFinanciado(
+            parametros.vgv,
+            custoConstrucao,
+            parametros.prazoMeses,
+            parametros.percentualInicio,
+            parametros.percentualMeio,
+            parametros.percentualFim,
+            parametros.percentualLancamento,
+            parametros.percentualBaloes,
+            parametros.percentualParcelas,
+            parametros.prazoParcelas
+        );
+
+        mostrarGraficos(fluxoCaixa);
+        atualizarTabelaFluxoCaixa(fluxoCaixa);
+        atualizarAnalise(fluxoCaixa, parametros);
+    }
+
+    function atualizarTabelaFluxoCaixa(fluxoCaixa) {
+        const tabela = document.getElementById('fluxoCaixaTable');
+        tabela.innerHTML = `
+            <tr>
+                <th>Mês</th>
+                <th>Receitas</th>
+                <th>Custos</th>
+                <th>Saldo Mensal</th>
+                <th>Saldo Acumulado</th>
+            </tr>
+            ${fluxoCaixa.map(item => `
+                <tr>
+                    <td>${item.mes}</td>
+                    <td>${item.receitas.toFixed(2)}</td>
+                    <td>${item.custos.toFixed(2)}</td>
+                    <td>${item.saldoMensal.toFixed(2)}</td>
+                    <td>${item.saldoAcumulado.toFixed(2)}</td>
+                </tr>
+            `).join('')}
+        `;
+    }
+
+    // Adicionar event listeners para os inputs
+    document.getElementById('vgv').addEventListener('change', (e) => {
+        parametros.vgv = parseFloat(e.target.value);
+        atualizarFluxoCaixa();
+    });
+
+    document.getElementById('custoConstrucaoPercentual').addEventListener('change', (e) => {
+        parametros.custoConstrucaoPercentual = parseFloat(e.target.value);
+        atualizarFluxoCaixa();
+    });
+
+    document.getElementById('prazoMeses').addEventListener('change', (e) => {
+        parametros.prazoMeses = parseInt(e.target.value);
+        atualizarFluxoCaixa();
+    });
+
+    // Adicione mais event listeners para outros inputs
+
+    // Inicialização
+    atualizarFluxoCaixa();
 });
