@@ -1,3 +1,9 @@
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM carregado");
+    inicializarFormulario();
+    atualizarFluxoCaixa();
+    // ... resto do código
+});
 import calcularFluxoAutoFinanciado from './calculos.js';
 import mostrarGraficos from './graficos.js';
 import atualizarAnalise from './analise.js';
