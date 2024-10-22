@@ -1,7 +1,5 @@
-/* Aqui você pode colocar os estilos da skin que você escolheu */
-body {
-    font-family: 'Roboto', sans-serif;
-    /* Outros estilos... */
+#fluxoCaixaChart {
+    height: 400px;
+    width: 100%;
+    margin-bottom: 20px;
 }
-
-/* Adicione mais estilos conforme necessário */
