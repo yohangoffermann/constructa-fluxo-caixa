@@ -1,3 +1,9 @@
+console.log("Arquivo graficos.js carregado");
+
+export function mostrarGraficos(fluxoCaixa) {
+    console.log("Função mostrarGraficos chamada", fluxoCaixa);
+    
+}
 export function mostrarGraficos(fluxoCaixa) {
     const ctx = document.getElementById('fluxoCaixaChart').getContext('2d');
     
