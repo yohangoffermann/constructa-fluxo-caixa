@@ -3,94 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fluxo de Caixa - Constructa</title>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <title>Análise de Fluxo de Caixa - Modelo Auto Financiado</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
     <style>
-        .line {
-            fill: none;
-            stroke-width: 2px;
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f6;
         }
-        .axis-label {
-            font-size: 12px;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        h1, h2 {
+            color: #31333F;
+        }
+        #vis {
+            width: 100%;
+            height: 500px;
         }
     </style>
 </head>
 <body>
-    <svg width="960" height="500"></svg>
-    <script>
-        // Dados de exemplo (você vai substituir isso pelos dados reais do empreendimento)
-        const data = [
-            {mes: 1, receitas: 100000, custos: 80000, saldoAcumulado: 20000},
-            {mes: 2, receitas: 150000, custos: 100000, saldoAcumulado: 70000},
-            // ... adicione mais meses aqui
-        ];
-
-        const svg = d3.select("svg");
-        const margin = {top: 20, right: 20, bottom: 30, left: 50};
-        const width = +svg.attr("width") - margin.left - margin.right;
-        const height = +svg.attr("height") - margin.top - margin.bottom;
-        const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
-
-        const x = d3.scaleLinear().rangeRound([0, width]);
-        const y = d3.scaleLinear().rangeRound([height, 0]);
-
-        const line = d3.line()
-            .x(d => x(d.mes))
-            .y(d => y(d.saldoAcumulado));
-
-        x.domain(d3.extent(data, d => d.mes));
-        y.domain([d3.min(data, d => Math.min(d.saldoAcumulado, 0)), d3.max(data, d => d.saldoAcumulado)]);
-
-        g.append("g")
-            .attr("transform", `translate(0,${height})`)
-            .call(d3.axisBottom(x))
-            .append("text")
-            .attr("fill", "#000")
-            .attr("y", 20)
-            .attr("x", width / 2)
-            .attr("text-anchor", "middle")
-            .text("Mês");
-
-        g.append("g")
-            .call(d3.axisLeft(y))
-            .append("text")
-            .attr("fill", "#000")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", "0.71em")
-            .attr("text-anchor", "end")
-            .text("Saldo (R$)");
-
-        g.append("path")
-            .datum(data)
-            .attr("class", "line")
-            .attr("stroke", "steelblue")
-            .attr("d", line);
-
-        // Barras para receitas e custos
-        g.selectAll(".bar-receitas")
-            .data(data)
-            .enter().append("rect")
-            .attr("class", "bar-receitas")
-            .attr("x", d => x(d.mes) - 10)
-            .attr("y", d => y(d.receitas))
-            .attr("width", 10)
-            .attr("height", d => height - y(d.receitas))
-            .attr("fill", "green")
-            .attr("opacity", 0.5);
-
-        g.selectAll(".bar-custos")
-            .data(data)
-            .enter().append("rect")
-            .attr("class", "bar-custos")
-            .attr("x", d => x(d.mes))
-            .attr("y", d => y(d.custos))
-            .attr("width", 10)
-            .attr("height", d => height - y(d.custos))
-            .attr("fill", "red")
-            .attr("opacity", 0.5);
-    </script>
+    <div class="container">
+        <h1>Análise de Fluxo de Caixa - Modelo Auto Financiado</h1>
+        <div id="vis"></div>
+        <h2>Métricas do Projeto</h2>
+        <div id="metricas"></div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
-
-Adicionando visualização inicial do fluxo de caixa
