@@ -4,7 +4,9 @@ import { atualizarAnalise } from './analise.js';
 function atualizarFluxoCaixa() {
     console.log("atualizarFluxoCaixa chamado");
     
-console.log("main.js carregado");
+console.log("Fluxo de caixa calculado:", fluxoCaixa);
+    console.log("Chamando mostrarGraficos com dados:", JSON.stringify(fluxoCaixa));
+    mostrarGraficos(fluxoCaixa);
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOMContentLoaded event fired");
